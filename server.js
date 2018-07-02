@@ -20,27 +20,27 @@ con.connect(function(err)
 app.get('/', function(req , res)
 {
   console.log("your index page has loaded successfully");
-  res.sendFile(__dirname + "/project/" +  "index.html");
+  res.sendFile(__dirname + "/frontend/" +  "index.html");
 })
 app.get('/teacherlogin', function(req , res)
 {
   console.log("your teacher page has loaded successfully");
-  res.sendFile(__dirname + "/project/" +  "teacher_login.html");
+  res.sendFile(__dirname +"/frontend/" +  "teacher_login.html");
 })
 app.get('/studentlogin', function(req , res)
 {
   console.log("your student page has loaded successfully");
-  res.sendFile(__dirname + "/project/" +  "login.html");
+  res.sendFile(__dirname + "/frontend/" +  "login.html");
 })
 app.get('/newstudent', function(req , res)
 {
   console.log("your signup page for student has loaded successfully");
-  res.sendFile(__dirname + "/project/" +  "signup.html");
+  res.sendFile(__dirname + "/frontend/" +  "signup.html");
 })
 app.get('/newteacher', function(req , res)
 {
   console.log("your signup page for teacher has loaded successfully");
-  res.sendFile(__dirname + "/project/" +  "teacher_signup.html");
+  res.sendFile(__dirname + "/frontend/" +  "teacher_signup.html");
 })
 
 app.post('/process_stud' , function(req, res){
@@ -57,7 +57,7 @@ app.post('/process_stud' , function(req, res){
         }
         else {
             if((result[0].password)==(md5(req.body.password)))
-            res.sendFile(__dirname +"/project/" + "thanks.html" );
+            res.sendFile(__dirname +"/frontend/" + "thanks.html" );
             else {
               res.end("WRONG CREDENTIALS");
                   }
@@ -80,7 +80,8 @@ app.post('/process_teach' , function(req, res){
         }
         else {
             if((result[0].password)==(md5(req.body.password)))
-            res.sendFile(__dirname +"/project/" + "thanks.html" );
+            res.sendFile(__dirname +"/frontend/" + "thanks.html" );
+          }
             else {
               res.end("WRONG CREDENTIALS");
                   }
@@ -101,7 +102,7 @@ app.post('/register_stud', function(req,res)
       if(err) throw err;
       console.log("user added to db with id " + result.insertId);
       })
-      res.sendFile(__dirname + "/project/" + "student_details.html" );
+      res.sendFile(__dirname + "/frontend/" + "student_details.html" );
 }
 })
 })
@@ -118,7 +119,7 @@ app.post('/register_teach', function(req,res)
       if(err) throw err;
       console.log("user added to db with id " + result.insertId);
       })
-      res.sendFile(__dirname + "/project/" + "teacher_details.html" );
+      res.sendFile(__dirname + "/frontend/" + "teacher_details.html" );
 }
 })
 })
