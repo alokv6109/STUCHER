@@ -9,7 +9,11 @@ var con = mysql.createConnection
 ({
   host:"localhost",
   user:"root",
+<<<<<<< HEAD
   password:"",
+=======
+  password:'',
+>>>>>>> dcc6d78ba25b80e821e42c8bbcb6309c3b058974
   database:"project_database"
 })
 con.connect(function(err)
@@ -47,7 +51,7 @@ app.post('/process_stud' , function(req, res){
 //  console.log(md5('alok'));
   //console.log(req);
     var sql = "select * from users where roll_no = ? or email_id=?";
-    con.query(sql, [req.body.username, req.body.username], function(err , result)
+    con.query(sql, [req.body.login_id, req.body.login_id], function(err , result)
     {
       if(err) throw err;
 
@@ -80,8 +84,12 @@ app.post('/process_teach' , function(req, res){
         }
         else {
             if((result[0].password)==(md5(req.body.password)))
+<<<<<<< HEAD
           {  res.sendFile( "F:/intern-project/frontend/" +"teacher_details.html" );
           }
+=======
+            res.sendFile(__dirname +"/frontend/" + "thanks.html" );
+>>>>>>> dcc6d78ba25b80e821e42c8bbcb6309c3b058974
             else {
               res.end("WRONG CREDENTIALS");
                   }
