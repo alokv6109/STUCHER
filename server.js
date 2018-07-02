@@ -1,4 +1,5 @@
 var express = require('express');
+var path=require('path')
 var app = express();
 var md5 = require('md5');
 var bodyParser = require('body-parser');
@@ -23,27 +24,27 @@ con.connect(function(err)
 app.get('/', function(req , res)
 {
   console.log("your index page has loaded successfully");
-  res.sendFile("F:/intern-project/frontend/" +  "index.html");
+  res.sendFile("/intern-project/frontend/" +  "index.html");
 })
 app.get('/teacherlogin', function(req , res)
 {
   console.log("your teacher page has loaded successfully");
-  res.sendFile("F:/intern-project/frontend/" +  "teacher_login.html");
+  res.sendFile("/intern-project/frontend/" +  "teacher_login.html");
 })
 app.get('/studentlogin', function(req , res)
 {
   console.log("your student page has loaded successfully");
-  res.sendFile( "F:/intern-project/frontend/" +  "login.html");
+  res.sendFile( "/intern-project/frontend/" +  "login.html");
 })
 app.get('/newstudent', function(req , res)
 {
   console.log("your signup page for student has loaded successfully");
-  res.sendFile( "F:/intern-project/frontend/" +  "signup.html");
+  res.sendFile( "/intern-project/frontend/" +  "signup.html");
 })
 app.get('/newteacher', function(req , res)
 {
   console.log("your signup page for teacher has loaded successfully");
-  res.sendFile("F:/intern-project/frontend/" +  "teacher_signup.html");
+  res.sendFile("/intern-project/frontend/" +  "teacher_signup.html");
 })
 
 app.post('/process_stud' , function(req, res){
@@ -60,7 +61,7 @@ app.post('/process_stud' , function(req, res){
         }
         else {
             if((result[0].password)==(md5(req.body.password)))
-            res.sendFile("F:/intern-project/frontend/" + "student_details.html" );
+            res.sendFile("/intern-project/frontend/" + "student_details.html" );
             else {
               res.end("WRONG CREDENTIALS");
                   }
@@ -84,7 +85,7 @@ app.post('/process_teach' , function(req, res){
         else {
             if((result[0].password)==(md5(req.body.password)))
 
-          {  res.sendFile( "F:/intern-project/frontend/" +"teacher_details.html" );
+          {  res.sendFile( "/intern-project/frontend/" +"teacher_details.html" );
           }
 
           
@@ -108,7 +109,7 @@ app.post('/register_stud', function(req,res)
       if(err) throw err;
       console.log("user added to db with id " + result.insertId);
       })
-      res.sendFile("F:/intern-project/frontend/" + "student_details.html" );
+      res.sendFile("/intern-project/frontend/" + "student_details.html" );
 }
 })
 })
@@ -125,10 +126,12 @@ app.post('/register_teach', function(req,res)
       if(err) throw err;
       console.log("user added to db with id " + result.insertId);
       })
-      res.sendFile("F:/intern-project/frontend/" + "teacher_details.html" );
+      res.sendFile("/intern-project/frontend/" + "teacher_details.html" );
 }
 })
 })
+var htmlPath = path.join("F:/intern-project/"+'frontend');
+app.use(express.static(htmlPath));
 
 
 var server = app.listen(8081, function () {
