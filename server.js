@@ -47,7 +47,7 @@ app.post('/process_stud' , function(req, res){
 //  console.log(md5('alok'));
   //console.log(req);
     var sql = "select * from users where roll_no = ? or email_id=?";
-    con.query(sql, [req.body.username, req.body.username], function(err , result)
+    con.query(sql, [req.body.login_id, req.body.login_id], function(err , result)
     {
       if(err) throw err;
 
