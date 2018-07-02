@@ -12,7 +12,7 @@ var con = mysql.createConnection
 
   password:"",
 
-  
+
   database:"project_database"
 })
 con.connect(function(err)
@@ -83,12 +83,11 @@ app.post('/process_teach' , function(req, res){
         }
         else {
             if((result[0].password)==(md5(req.body.password)))
-<<<<<<< HEAD
+
           {  res.sendFile( "F:/intern-project/frontend/" +"teacher_details.html" );
           }
-=======
-            res.sendFile(__dirname +"/frontend/" + "thanks.html" );
->>>>>>> dcc6d78ba25b80e821e42c8bbcb6309c3b058974
+
+          
             else {
               res.end("WRONG CREDENTIALS");
                   }
