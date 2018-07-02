@@ -88,7 +88,7 @@ app.post('/process_teach' , function(req, res){
           {  res.sendFile( "/intern-project/frontend/" +"teacher_details.html" );
           }
 
-          
+
             else {
               res.end("WRONG CREDENTIALS");
                   }
@@ -104,8 +104,11 @@ app.post('/register_stud', function(req,res)
           if(result.length>0){
             res.end("roll_no or mobile_no already exists! please check them once");
           }else{
-  var sql= "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password) values(?,?,?,?,?,?,?,?)";
-    con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.roll_no, req.body.branch, req.body.email, req.body.mobile, md5(req.body.password)], function(err, result){
+            var data = new Date(); // without jquery remove this $.now()
+console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
+
+  var sql= "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at, modified_at) values(?,?,?,?,?,?,?,?,?,?)";
+    con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.roll_no, req.body.branch, req.body.email, req.body.mobile, md5(req.body.password),data,data], function(err, result){
       if(err) throw err;
       console.log("user added to db with id " + result.insertId);
       })
@@ -121,8 +124,11 @@ app.post('/register_teach', function(req,res)
           if(result.length>0){
             res.end("emp_id or mobile_no already exists! please check them once");
           }else{
-  var sql= "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password) values(?,?,?,?,?,?,?,?)";
-    con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.roll_no, req.body.department, req.body.email, req.body.mobile, md5(req.body.password)], function(err, result){
+            var data = new Date(); // without jquery remove this $.now()
+console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
+
+  var sql= "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at,modified_at) values(?,?,?,?,?,?,?,?,?,?)";
+    con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.emp_id, req.body.department, req.body.email, req.body.mobile, md5(req.body.password),data,data], function(err, result){
       if(err) throw err;
       console.log("user added to db with id " + result.insertId);
       })
