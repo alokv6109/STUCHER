@@ -107,8 +107,8 @@ app.post('/register_stud', function(req,res)
             var data = new Date(); // without jquery remove this $.now()
 console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
 
-  var sql= "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at, modified_at) values(?,?,?,?,?,?,?,?,?,?)";
-    con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.roll_no, req.body.branch, req.body.email, req.body.mobile, md5(req.body.password),data,data], function(err, result){
+  var sql= "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at, modified_at, image) values(?,?,?,?,?,?,?,?,?,?,?)";
+    con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.roll_no, req.body.branch, req.body.email, req.body.mobile, md5(req.body.password),data,data, req.body.pic], function(err, result){
       if(err) throw err;
       console.log("user added to db with id " + result.insertId);
       })
@@ -127,8 +127,8 @@ app.post('/register_teach', function(req,res)
             var data = new Date(); // without jquery remove this $.now()
 console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
 
-  var sql= "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at,modified_at) values(?,?,?,?,?,?,?,?,?,?)";
-    con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.emp_id, req.body.department, req.body.email, req.body.mobile, md5(req.body.password),data,data], function(err, result){
+  var sql= "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at,modified_at, image) values(?,?,?,?,?,?,?,?,?,?,?)";
+    con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.emp_id, req.body.department, req.body.email, req.body.mobile, md5(req.body.password),data,data, req.body.pic], function(err, result){
       if(err) throw err;
       console.log("user added to db with id " + result.insertId);
       })
