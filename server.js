@@ -7,17 +7,14 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
 app.use(urlencodedParser);
 var mysql = require('mysql');
-  var token1;
+var token1;
 var con = mysql.createConnection
-  ({
-    host: "localhost",
-    user: "root",
-
-    password: "",
-
-
-    database: "project_database"
-  })
+({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "project_database"
+})
 con.connect(function (err) {
   if (err) throw err;
   console.log("connected! yo db");
@@ -60,7 +57,7 @@ app.post('/process_stud', function (req, res) {
         var date = new Date();
         console.log(date);
 
-       jwt.sign({ date }, 'i_am_alok', function (err, token)//token assigned in this line
+        jwt.sign({ date }, 'i_am_alok', function (err, token)//token assigned in this line
         {
           token1= token;
           // res.json(
@@ -70,22 +67,16 @@ app.post('/process_stud', function (req, res) {
           console.log(token);
           req.header['x-access-token']=token;
           con.query("update users set  login_token=?  where email_id=?", [token1,result[0].email_id],function( err, result)
-         {
-             if(err) throw err;
-              //console.log(token1 +"this oi tsdfdv");
-           })
-            });
-        //this is actually firing th query outside the asssignment of the token
+          {
+            if(err) throw err;
+            //console.log(token1 +"this oi tsdfdv");
+          })
+        });
+
         setTimeout(function(){
           console.log("token1",token1);
-         }, 3000);
-
-
-
-        //console.log(token1 + "   fsdg");
-
-
-                res.sendFile(path.resolve('../frontend/assets/html/student_details.html'));
+        }, 3000);
+        res.sendFile(path.resolve('../frontend/assets/html/student_details.html'));
       }
       else {
         res.end("WRONG CREDENTIALS");
@@ -132,16 +123,16 @@ app.post('/process_teach', function (req, res) {
           req.header['x-access-token']=token;
           console.log(token);
           con.query("update users set  login_token=?  where email_id=?", [token1,result[0].email_id],function( err, result)
-         {
-             if(err) throw err;
-              //console.log(token1 +"this oi tsdfdv");
-           })
+          {
+            if(err) throw err;
+            //console.log(token1 +"this oi tsdfdv");
+          })
         });
-        //query fired outside the asssignment of token thing
-             setTimeout(function(){
+
+        setTimeout(function(){
           console.log("token1",token1);
-         }, 3000);
-          res.sendFile(path.resolve('../frontend/assets/html/teacher_details.html'));
+        }, 3000);
+        res.sendFile(path.resolve('../frontend/assets/html/teacher_details.html'));
       }  else {
         res.end("WRONG CREDENTIALS");
       }
