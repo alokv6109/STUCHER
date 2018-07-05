@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
 app.use(urlencodedParser);
 var mysql = require('mysql');
+  var token1;
 var con = mysql.createConnection
   ({
     host: "localhost",
@@ -58,36 +59,33 @@ app.post('/process_stud', function (req, res) {
       if ((result[0].password) == (md5(req.body.password))) {
         var date = new Date();
         console.log(date);
-        var token1 = jwt.sign({ date }, 'i_am_alok', function (err, token)//token assigned in this line
+
+       jwt.sign({ date }, 'i_am_alok', function (err, token)//token assigned in this line
         {
+          token1= token;
           // res.json(
           //   {
           //     token
           //   });
           console.log(token);
-          con.query("update users set  login_token=?  where email_id=?", [token, result[0].email_id], function (err, result) {
-            if (err) throw err;
-            //console.log(token1 +"this oi tsdfdv");
-            // app.get('/process_stud',function(err,res){
-            //   if(err) throw err
-            //   console.log(result[0])
-            // });
-            // app.get('/process_stud', function (req, res) {
-            //   var q = "select * from users where roll_no=?";
-            //   con.query(q, [req.body.login_id], function (err, result) {
-            //     if (err) throw err
-            //     console.log("Hello ")
-            //     console.log(req)
-            //     // console.log(result[0])
-            //     // res.send(result[0])
-            //   })
-            // });
-          });
+          req.header['x-access-token']=token;
+          con.query("update users set  login_token=?  where email_id=?", [token1,result[0].email_id],function( err, result)
+         {
+             if(err) throw err;
+              //console.log(token1 +"this oi tsdfdv");
+           })
+            });
+        //this is actually firing th query outside the asssignment of the token
+        setTimeout(function(){
+          console.log("token1",token1);
+         }, 3000);
 
-        });
+
+
         //console.log(token1 + "   fsdg");
 
-        res.render()
+
+                res.sendFile(path.resolve('../frontend/assets/html/student_details.html'));
       }
       else {
         res.end("WRONG CREDENTIALS");
@@ -97,19 +95,17 @@ app.post('/process_stud', function (req, res) {
   console.log("your student login page is processing some request");
 })
 
-app.get('/process_stud',function(req,res){
-  var q="select * from users where roll_no=?";
-  console.log('sanjay',req.body);
-  
-  
-  con.query(q,[req.body.login_id],function(err,result){
-    if(err) throw err
-    console.log("Hello ")
-
-    console.log(result[0])
-    res.send(result[0])
-  })
-});
+// app.get('/process_stud',function(req,res){
+//   console.log(req.body);
+//   var q="select * from users where roll_no=?";
+//   con.query(q,[req.body.login_id],function(err,result){
+//     if(err) throw err
+//     console.log("Hello ")
+//
+//     console.log(result[0])
+//     res.send(result[0])
+//   })
+// });
 
 
 app.post('/process_teach', function (req, res) {
@@ -126,26 +122,27 @@ app.post('/process_teach', function (req, res) {
       if ((result[0].password) == (md5(req.body.password))) {
         var date = new Date();
         console.log(date);
-        var token1 = jwt.sign({ date }, 'i_am_alok', function (err, token)//token assigned in this line
+        jwt.sign({ date }, 'i_am_alok', function (err, token)//token assigned in this line
         {
+          token1=token;
           // res.json(
           //   {
           //     token
           //   });
+          req.header['x-access-token']=token;
           console.log(token);
-          con.query("update users set  login_token=?  where email_id=?", [token, result[0].email_id], function (err, result) {
-            if (err) throw err;
-            //console.log(token1 +"this oi tsdfdv");
-          })
-
+          con.query("update users set  login_token=?  where email_id=?", [token1,result[0].email_id],function( err, result)
+         {
+             if(err) throw err;
+              //console.log(token1 +"this oi tsdfdv");
+           })
         });
-
-
-        res.sendFile("/intern-project/frontend/assets/html/" + "teacher_details.html");
-      }
-
-
-      else {
+        //query fired outside the asssignment of token thing
+             setTimeout(function(){
+          console.log("token1",token1);
+         }, 3000);
+          res.sendFile(path.resolve('../frontend/assets/html/teacher_details.html'));
+      }  else {
         res.end("WRONG CREDENTIALS");
       }
     }
