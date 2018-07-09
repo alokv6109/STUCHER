@@ -202,8 +202,8 @@ app.post('/forgot_password', function(req, res){
 		{	console.log("email did not match");
 			res.end("oops!!your email id did not match")
 		}else {
-    var sql1= "update users set password=?"
-      con.query(sql1,[md5(req.body.password)],function(err,result1){
+    var sql1= "update users set password=? where email_id=?";
+      con.query(sql1,[md5(req.body.password),req.body.email],function(err,result1){
         if(err)
 				 throw err;
           else{res.end("your password has been changed successfully");
