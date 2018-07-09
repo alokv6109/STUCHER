@@ -72,7 +72,7 @@ app.post('/process_stud', function (req, res) {
 			res.end("Please! check your username once");
 		}
 		else {
-			if (((result[0].password) == (md5(req.body.password)))&&(result[0].role_id!='2')) {
+			if (((result[0].password) == (md5(req.body.password)))&&(result[0].role_id=='1')) {
 				var date = new Date();
 				console.log(date);
 				var token1;
@@ -92,13 +92,11 @@ app.post('/process_stud', function (req, res) {
 					})
 
 				});
-				}  else {
-				res.end("WRONG CREDENTIALS");
-			}
-
+				} 
+				else{console.log("LOGIN TOKEN ******")
+				res.end("WRONG CREDENTIALS");}
 		}
 	})
-
 	console.log("your student login page is processing some request");
 })
 app.post('/student_details',function(req,res){
@@ -130,7 +128,7 @@ app.post('/process_teach', function (req, res) {
 			res.end("Please! check your username once");
 		}
 		else {
-			if (((result[0].password) == (md5(req.body.password)))&&(result[0].role_id!='1') ){
+			if (((result[0].password) == (md5(req.body.password)))&&(result[0].role_id=='2') ){
 				var date = new Date();
 				console.log(date);
 				var token1;
