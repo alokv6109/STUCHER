@@ -31,7 +31,6 @@ con.connect(function (err) {
 	console.log("connected! yo db");
 });
 
-// var htmlPath = path.join("F:/intern-project/frontend/" + 'assets');
 app.use(express.static('../frontend/assets'));
 
 app.get('/', function (req, res) {
@@ -54,14 +53,14 @@ app.get('/newteacher', function (req, res) {
 	console.log("your signup page for teacher has loaded successfully");
 	res.sendFile(path.resolve('../frontend/assets/html/teacher_signup.html'));
 })
-// app.get('/forgot_password',function(req,res){
-// 	res.sendFile(path.resolve('../frontend/assets/html/forgot_password.html'));
-// })
 app.get('/student_details',function(req,res){
 	res.sendFile(path.resolve('../frontend/assets/html/student_details.html'));
 })
-app.get("/forgotpassword", function (req, res) {
-	console.log("your forgotpassword page for teacher has loaded successfully");
+app.get('/teacher_details',function(req,res){
+	res.sendFile(path.resolve('../frontend/assets/html/teacher_details.html'));
+})
+app.get("/forgot_password", function (req, res) {
+	console.log("your forgotpassword page has loaded successfully");
 	res.sendFile(path.resolve('../frontend/assets/html/forgot_password.html'));
 })
 app.post('/process_stud', function (req, res) {
@@ -90,7 +89,6 @@ app.post('/process_stud', function (req, res) {
 							  status:"success"};
 							  console.log(data)
 							res.send( data);
-						//console.log(token1 +"this oi tsdfdv");
 					})
 
 				});
@@ -103,7 +101,7 @@ app.post('/process_stud', function (req, res) {
 
 	console.log("your student login page is processing some request");
 })
-app.post('/student',function(req,res){
+app.post('/student_details',function(req,res){
 	console.log('the get request is ',req.body)
 	var sq="select *from users where login_token=?";
 	con.query(sq, [req.body.token], function (err, result) {
@@ -112,9 +110,18 @@ app.post('/student',function(req,res){
 		res.send(result[0])
 		})
 })
+
+app.post('/teacher_details',function(req,res){
+	console.log('the get request is ',req.body)
+	var sq="select *from users where login_token=?";
+	con.query(sq, [req.body.token], function (err, result) {
+		if (err) throw err;
+		console.log(result)
+		res.send(result[0])
+		})
+})
+
 app.post('/process_teach', function (req, res) {
-	//  console.log(md5('alok'));
-	//console.log(req);
 	var sql = "select * from users where roll_no = ? or email_id=?";
 	con.query(sql, [req.body.emp_id, req.body.emp_id], function (err, result) {
 		if (err) throw err;
@@ -130,12 +137,7 @@ app.post('/process_teach', function (req, res) {
 				jwt.sign({ date }, 'i_am_alok', function (err, token)//token assigned in this line
 				{
 					token1=token;
-					// res.json(
-					//   {
-					//     token
-					//   });
 					req.header['x-access-token']=token;
-					//console.log(token);
 					con.query("update users set  login_token=?  where email_id=?", [token1,result[0].email_id],function( err, result1)
 					{
 						if(err) throw err;
@@ -143,25 +145,13 @@ app.post('/process_teach', function (req, res) {
 							 id: result[0].id ,
 							  status:"success"};
 							res.send( data);
-						//console.log(token1 +"this oi tsdfdv");
 					})
 				});
-				//console.log("this  gives the earlier result       ",  result[0]);
-				//setTimeout(function(){  console.log("token1",token1);}, 3000);
 			}  else {
 				res.end("WRONG CREDENTIALS");
 			}
 		}
 	})
-	var query="select * from users where roll_no=? or email_id=?"
-	// con.query(query, [req.body.emp_id,req.body.emp_id], function(err, result1){
-	// 	if(err) throw err;
-	// 	else {
-	//
-	// 		res.send(result1[0]);
-	// 		console.log("result1 is here");
-	// 	}
-	// })
 	console.log("your teacher login page is processing some request");
 })
 app.post('/register_stud', function (req, res) {
@@ -191,7 +181,7 @@ app.post('/register_teach', function (req, res) {
 		if (result.length > 0) {
 			res.end("emp_id or mobile_no already exists! please check them once");
 		} else {
-			var data = new Date(); // without jquery remove this $.now()
+			var data = new Date();
 			console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
 
 			var sql = "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at,modified_at,image,role_id) values(?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -203,29 +193,26 @@ app.post('/register_teach', function (req, res) {
 		}
 	})
 })
-// app.post('/forgot_password', function(req, res){
-// 	//console.log(req.body.email);
-//   var sql= "select * from users where email_id=?"
-//    con.query(sql, [req.body.email], function(err, result)
-//  {
-//     if(err) throw err;
-// 		if(result.length<=0)
-// 		{	console.log("email did not match");
-// 			res.end("oops!!your email id did not match")
-// 	//	console.log(result[0]);
-// 		}else {
-//     var sql1= "update users set password=?"
-//       con.query(sql1,[md5(req.body.password)],function(err,result1){
-//         if(err)
-// 				 throw err;
-//           else{res.end("your password has been changed successfully");
-// 					//console.log("undifined ", result1[0]);
-// 				}
-//       })
-//
-//       }})
-// 			console.log("your forgot password page has loaded successfully");
-//   })
+app.post('/forgot_password', function(req, res){
+  var sql= "select * from users where email_id=?"
+   con.query(sql, [req.body.email], function(err, result)
+ {
+    if(err) throw err;
+		if(result.length<=0)
+		{	console.log("email did not match");
+			res.end("oops!!your email id did not match")
+		}else {
+    var sql1= "update users set password=?"
+      con.query(sql1,[md5(req.body.password)],function(err,result1){
+        if(err)
+				 throw err;
+          else{res.end("your password has been changed successfully");
+				}
+      })
+
+      }})
+			console.log("your forgot password page has loaded successfully");
+  })
 var server = app.listen(8081, function () {
 	var host = server.address().address
 	var port = server.address().port
