@@ -54,11 +54,15 @@ app.get('/newteacher', function (req, res) {
 	console.log("your signup page for teacher has loaded successfully");
 	res.sendFile(path.resolve('../frontend/assets/html/teacher_signup.html'));
 })
-app.get('/forgot_password',function(req,res){
-	res.sendFile(path.resolve('../frontend/assets/html/forgot_password.html'));
-})
+// app.get('/forgot_password',function(req,res){
+// 	res.sendFile(path.resolve('../frontend/assets/html/forgot_password.html'));
+// })
 app.get('/student_details',function(req,res){
 	res.sendFile(path.resolve('../frontend/assets/html/student_details.html'));
+})
+app.get("/forgotpassword", function (req, res) {
+	console.log("your forgotpassword page for teacher has loaded successfully");
+	res.sendFile(path.resolve('../frontend/assets/html/forgot_password.html'));
 })
 app.post('/process_stud', function (req, res) {
 	console.log("the request is ",req.body.login_id);
@@ -199,6 +203,29 @@ app.post('/register_teach', function (req, res) {
 		}
 	})
 })
+// app.post('/forgot_password', function(req, res){
+// 	//console.log(req.body.email);
+//   var sql= "select * from users where email_id=?"
+//    con.query(sql, [req.body.email], function(err, result)
+//  {
+//     if(err) throw err;
+// 		if(result.length<=0)
+// 		{	console.log("email did not match");
+// 			res.end("oops!!your email id did not match")
+// 	//	console.log(result[0]);
+// 		}else {
+//     var sql1= "update users set password=?"
+//       con.query(sql1,[md5(req.body.password)],function(err,result1){
+//         if(err)
+// 				 throw err;
+//           else{res.end("your password has been changed successfully");
+// 					//console.log("undifined ", result1[0]);
+// 				}
+//       })
+//
+//       }})
+// 			console.log("your forgot password page has loaded successfully");
+//   })
 var server = app.listen(8081, function () {
 	var host = server.address().address
 	var port = server.address().port
