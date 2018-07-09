@@ -5,8 +5,10 @@ var md5 = require('md5');
 var jwt = require('jsonwebtoken');
 var multer = require('multer')
 var bodyParser = require('body-parser');
-var urlencodedParser = bodyParser.urlencoded({ extended: true })
-app.use(urlencodedParser);
+app.use(bodyParser.urlencoded({
+	extended: true
+  }));
+  app.use(bodyParser.json());
 var storage = multer.diskStorage({
 	destination: function(req, file, callback) {
 		callback(null, 'F:/intern-project/backend/db_profile_image')
@@ -52,9 +54,14 @@ app.get('/newteacher', function (req, res) {
 	console.log("your signup page for teacher has loaded successfully");
 	res.sendFile(path.resolve('../frontend/assets/html/teacher_signup.html'));
 })
-
+app.get('/forgot_password',function(req,res){
+	res.sendFile(path.resolve('../frontend/assets/html/forgot_password.html'));
+})
+app.get('/student_details',function(req,res){
+	res.sendFile(path.resolve('../frontend/assets/html/student_details.html'));
+})
 app.post('/process_stud', function (req, res) {
-
+	console.log("the request is ",req.body.login_id);
 	var sql = "select * from users where roll_no = ? or email_id=?";
 	con.query(sql, [req.body.login_id, req.body.login_id], function (err, result) {
 		if (err) throw err;
@@ -77,6 +84,7 @@ app.post('/process_stud', function (req, res) {
 						var data = {token :token1,
 							 id: result[0].id ,
 							  status:"success"};
+							  console.log(data)
 							res.send( data);
 						//console.log(token1 +"this oi tsdfdv");
 					})
@@ -90,6 +98,15 @@ app.post('/process_stud', function (req, res) {
 	})
 
 	console.log("your student login page is processing some request");
+})
+app.post('/student',function(req,res){
+	console.log('the get request is ',req.body)
+	var sq="select *from users where login_token=?";
+	con.query(sq, [req.body.token], function (err, result) {
+		if (err) throw err;
+		console.log(result)
+		res.send(result[0])
+		})
 })
 app.post('/process_teach', function (req, res) {
 	//  console.log(md5('alok'));
