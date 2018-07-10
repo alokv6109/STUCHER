@@ -71,8 +71,9 @@ app.post('/process_stud', function (req, res) {
 		if (result.length <= 0) {
 			res.end("Please! check your username once");
 		}
-		else {
-			if (((result[0].password) == (md5(req.body.password)))&&(result[0].role_id!='2')) {
+		if(result.length==1){
+		if(result[0].role_id=='1'){
+			if ((result[0].password) == (md5(req.body.password))) {
 				var date = new Date();
 				console.log(date);
 				var token1;
@@ -94,7 +95,7 @@ app.post('/process_stud', function (req, res) {
 				});
 				}  else {
 				res.end("WRONG CREDENTIALS");
-			}
+			}}else{res.end("WRONG CREDENTIALS")}
 
 		}
 	})
@@ -126,11 +127,12 @@ app.post('/process_teach', function (req, res) {
 	con.query(sql, [req.body.emp_id, req.body.emp_id], function (err, result) {
 		if (err) throw err;
 
-		if (result.length <= 0) {
+		if (result.length <= 0 ) {
 			res.end("Please! check your username once");
 		}
-		else {
-			if (((result[0].password) == (md5(req.body.password)))&&(result[0].role_id!='1') ){
+		if(result.length==1){
+		if(result[0].role_id=='2'){
+			if ((result[0].password) == (md5(req.body.password))){
 				var date = new Date();
 				console.log(date);
 				var token1;
@@ -149,7 +151,7 @@ app.post('/process_teach', function (req, res) {
 				});
 			}  else {
 				res.end("WRONG CREDENTIALS");
-			}
+			}}else{res.end("WRONG CREDENTIALS")}
 		}
 	})
 	console.log("your teacher login page is processing some request");
