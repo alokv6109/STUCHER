@@ -132,7 +132,7 @@ app.post('/process_teach', function (req, res) {
 	con.query(sql, [req.body.emp_id, req.body.emp_id], function (err, result) {
 		if (err) throw err;
 
-		if (result.length <= 0 ) {
+		if (result.length <=0 ) {
 			res.end("Please! check your username once");
 		}
 
@@ -180,7 +180,7 @@ app.post('/register_stud', function (req, res) {
 				if (err) throw err;
 				console.log("user added to db with id " + result.insertId);
 			})
-			res.sendFile(path.resolve('../frontend/assets/html/student_details.html'));
+			res.sendFile(path.resolve('../frontend/assets/html/student_login.html'));
 		}
 	})
 })
@@ -199,7 +199,7 @@ app.post('/register_teach', function (req, res) {
 				if (err) throw err;
 				console.log("user added to db with id " + result.insertId);
 			})
-			res.sendFile(path.resolve('../frontend/assets/html/teacher_details.html'));
+			res.sendFile(path.resolve('../frontend/assets/html/teacher_login.html'));
 		}
 	})
 })
