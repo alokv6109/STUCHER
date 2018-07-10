@@ -54,9 +54,11 @@ app.get('/newteacher', function (req, res) {
 	res.sendFile(path.resolve('../frontend/assets/html/teacher_signup.html'));
 })
 app.get('/student_details',function(req,res){
+	console.log("your student details page has loaded successfully");
 	res.sendFile(path.resolve('../frontend/assets/html/student_details.html'));
 })
 app.get('/teacher_details',function(req,res){
+	console.log("your teacher details page has loaded successfully");
 	res.sendFile(path.resolve('../frontend/assets/html/teacher_details.html'));
 })
 app.get("/forgot_password", function (req, res) {
@@ -97,7 +99,9 @@ app.post('/process_stud', function (req, res) {
 				res.end("WRONG CREDENTIALS");}
 		}
 	})
+	
 	console.log("your student login page is processing some request");
+	// res.end("WRONG CREDENTIALS");
 })
 app.post('/student_details',function(req,res){
 	console.log('the get request is ',req.body)
