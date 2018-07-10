@@ -54,9 +54,11 @@ app.get('/newteacher', function (req, res) {
 	res.sendFile(path.resolve('../frontend/assets/html/teacher_signup.html'));
 })
 app.get('/student_details',function(req,res){
+	console.log("your student details page has loaded successfully");
 	res.sendFile(path.resolve('../frontend/assets/html/student_details.html'));
 })
 app.get('/teacher_details',function(req,res){
+	console.log("your teacher details page has loaded successfully");
 	res.sendFile(path.resolve('../frontend/assets/html/teacher_details.html'));
 })
 app.get("/forgot_password", function (req, res) {
@@ -74,6 +76,7 @@ app.post('/process_stud', function (req, res) {
 		if(result.length==1){
 		if(result[0].role_id=='1'){
 			if ((result[0].password) == (md5(req.body.password))) {
+
 				var date = new Date();
 				console.log(date);
 				var token1;
@@ -93,6 +96,7 @@ app.post('/process_stud', function (req, res) {
 					})
 
 				});
+
 				}  else {
 				res.end("WRONG CREDENTIALS");
 			}}else{res.end("WRONG CREDENTIALS")}
@@ -101,6 +105,7 @@ app.post('/process_stud', function (req, res) {
 	})
 
 	console.log("your student login page is processing some request");
+	// res.end("WRONG CREDENTIALS");
 })
 app.post('/student_details',function(req,res){
 	console.log('the get request is ',req.body)
@@ -130,9 +135,11 @@ app.post('/process_teach', function (req, res) {
 		if (result.length <= 0 ) {
 			res.end("Please! check your username once");
 		}
+
 		if(result.length==1){
 		if(result[0].role_id=='2'){
 			if ((result[0].password) == (md5(req.body.password))){
+
 				var date = new Date();
 				console.log(date);
 				var token1;
