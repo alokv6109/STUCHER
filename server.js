@@ -165,7 +165,8 @@ app.post('/process_teach', function (req, res) {
 })
 app.post('/register_stud', function (req, res) {
 	var sql = "select * from users where roll_no = ? or mobile_number=? ";
-	con.query(sql, [req.body.login_id, req.body.login_id], function (err, result) {
+	con.query(sql, [req.body.roll_no, req.body.mobile], function (err, result){
+		//console.log("the length is    ",result.length);
 		if (err) throw err;
 		if (result.length > 0) {
 			res.end("roll_no or mobile_no already exists! please check them once");
