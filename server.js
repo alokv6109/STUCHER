@@ -112,7 +112,7 @@ app.post('/student_details',function(req,res){
 	var sq="select *from users where login_token=?";
 	con.query(sq, [req.body.token], function (err, result) {
 		if (err) throw err;
-		console.log(result)
+		//console.log(result)
 		res.send(result[0])
 		})
 })
@@ -223,6 +223,33 @@ app.post('/forgot_password', function(req, res){
       }})
 			console.log("your forgot password page has loaded successfully");
   })
+app.get('/marks',function(req,res){
+	//condition to be tested everytime
+	var sql1= "select login_token from users where id=?";
+	con.query(sql, [req.id], function(err, res){
+	if (err) throw err;
+	else{
+	  if(req.token==res[0].login_token)
+	  {//api k under queries
+				q2="select s.subject_name,m.marks from subjects s join marks m on s.id=m.subject_id where m.user_id=?"
+				con.query(q2,[ result[0].id],function (err, result3) {
+					if(err) throw err;
+
+				//console.log('the value of result3[0] is      ',result3[0]);
+				//console.log("th e result 3 are ", result3[0].subject_name)
+					// name[i]= result3[0].subject_name;
+					console.log(result3,"the result of the query ie fired is");
+					var data ={ result: result3,status:"success", };
+					res.send(result3);
+
+			})
+			// the above query is for the students to get their marks
+	  }else{
+	    res.send("your session has expired");
+	  }
+	}})
+})
+
 var server = app.listen(8081, function () {
 	var host = server.address().address
 	var port = server.address().port
