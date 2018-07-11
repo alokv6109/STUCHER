@@ -395,7 +395,7 @@ app.post('/teach_stud', function(req,res){
 	app.post('/logout', function(req, res){
 		//condition to be tested everytime
 		var sql1= "select login_token from users where id=?";
-		con.query(sql, [req.body.id], function(err, res1){
+		con.query(sql1, [req.body.id], function(err, res1){
 		if (err) throw err;
 		else{
 			if(req.body.token==res1[0].login_token)
@@ -416,13 +416,13 @@ app.post('/teach_stud', function(req,res){
 	app.post('/updateMarks', function(req, res){
 	//condition to be tested everytime
 	var sql1= "select login_token from users where id=?";
-	con.query(sql, [req.body.id], function(err, res1){
+	con.query(sql1, [req.body.id], function(err, res1){
 	if (err) throw err;
 	else{
 	  if(req.body.token==res1[0].login_token)
 	  {//api k under queries
-			var sql ="update marks set marks =? where teacher_id=?  and subject_id=?, subject_name=?"
-			con.query(sql, [req.body.marks, req.body.id, req.body.subject_id, req.body.subject_name], function(err, result){
+			var sql ="update marks set marks =? where teacher_id=?  and subject_id=?"
+			con.query(sql, [req.body.newmarks, req.body.id, req.body.sub_id], function(err, result){
 				if (err) throw err;
 				res.end();
 			})
@@ -433,7 +433,8 @@ app.post('/teach_stud', function(req,res){
 			var data = {status:"session expired"}
 		 res.send(data);
 	  }
-	})
+	}
+})
 
 })
 
