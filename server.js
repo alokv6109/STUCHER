@@ -418,11 +418,13 @@ app.post('/teach_stud', function(req,res){
 	var sql1= "select login_token from users where id=?";
 	con.query(sql1, [req.body.id], function(err, res1){
 	if (err) throw err;
+
 	else{
 	  if(req.body.token==res1[0].login_token)
 	  {//api k under queries
-			var sql ="update marks set marks =? where teacher_id=?  and subject_id=?"
-			con.query(sql, [req.body.newmarks, req.body.id, req.body.sub_id], function(err, result){
+			var date = new Date();
+			var sql ="update marks set marks =?, modified_at=? where teacher_id=?  and subject_id=?"
+			con.query(sql, [req.body.newmarks,date, req.body.id, req.body.sub_id], function(err, result){
 				if (err) throw err;
 				res.end();
 			})
