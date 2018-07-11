@@ -242,7 +242,7 @@ app.post('/marks',function(req,res){
 				//console.log("th e result 3 are ", result3[0].subject_name)
 					// name[i]= result3[0].subject_name;
 					console.log(result3,"the result of the query ie fired is");
-					var data ={ 
+					var data ={
 						result: result3,
 						status:"success" };
 					res.send(data);
@@ -254,6 +254,166 @@ app.post('/marks',function(req,res){
 	  }
 	}})
 })
+app.post('/teach_stud', function(req,res){
+	//condition to be tested everytime
+	var sql1= "select login_token from users where id=?";
+	con.query(sql1, [req.body.id], function(err, res1){
+		if (err) throw err;
+
+			if(req.body.token==res1[0].login_token)
+			{//api k under queries
+				sql2 = "select id from users where roll_no =?"
+				con.query(sql2, [req.body.roll_no], function(err, result0){
+					if(err) throw err;
+					var m= result0[0].id
+					console.log("the id is ",m);
+					var date = new Date();
+					var q1 = "update marks m set m.user_id=?, m.teacher_id=?, m.modified_at=? where m.teacher_id=? and m.user_id=? ";//this query will
+					// basically upddate everything if the teacher_id and the student_id/roll_no they match. but if we need the subject id ie  present there and also need to update marks that
+					// in some other subject id
+					con.query(q1, [ m, req.body.id, date,req.body.id, m], function(err, result){
+						if (err) throw err;
+						var k= result.affectedRows;
+						console.log("the result comes out to be  ", result.affectedRows);
+						if(k==0)
+						{
+							var q2 ="insert into marks(subject_id, user_id, teacher_id, modified_at) values(?,?,?,?)";
+						con.query(q2,[req.body.sub_id, m, req.body.id, date], function(err, result3){
+							if (err) throw err;
+							console.log("the number of affectedRows are after this  : ", result3.affectedRows);
+							var q3 = "select s.subject_name,m.marks from subjects s join marks m on s.id=m.subject_id where m.teacher_id=? and m.user_id=?"//select marks from marks where teacher_id=? and user_id=?
+							con.query(q3,[req.body.id, m], function(err, result2){
+								if (err) throw err;
+								console.log("the marks right now of this student are  and this is responnse 1", result2);
+								var data = {
+									marks : result2,
+									status:"the marks have been sent to you",
+									token : req.body.token,
+									id : req.body.id
+								}
+								res.send(data);
+							})
+						})
+						 }else{
+							var q3 = "select subject_id from marks where teacher_id = ? and user_id=?  "
+							con.query(q3, [req.body.id, m], function(err, result3){
+								if(err) throw err;
+								console.log("the subject id that are present with the entered user id and teacher id  ", result3);
+								console.log("the value of m is   ",  m);
+								if(result3.length==1){
+									if(result3[0].subject_id==req.body.sub_id){
+									q2 = "select s.subject_name,m.marks from subjects s join marks m on s.id=m.subject_id where m.teacher_id=? and m.user_id=?"//select marks from marks where teacher_id=? and user_id=?
+									con.query(q2,[req.body.id, m], function(err, result2){
+										if (err) throw err;
+										console.log("the marks right now of this student are and this is responnse  2", result2);
+										var data = {
+											marks : result2,
+											status:"the marks have been sent to you",
+											token : req.body.token,
+											id : req.body.id
+										}
+										//console.log(data);
+										res.send(data);
+									})}else{
+										var q4 ="insert into marks(subject_id, user_id, teacher_id, modified_at) values(?,?,?,?)"
+										con.query(q4, [req.body.sub_id, m, req.body.id, date ], function(err, result4){
+											if (err) throw err;
+											q2 = "select s.subject_name,m.marks from subjects s join marks m on s.id=m.subject_id where m.teacher_id=? and m.user_id=?"//select marks from marks where teacher_id=? and user_id=?
+											con.query(q2,[req.body.id, m], function(err, result2){
+												if (err) throw err;
+												console.log("the marks right now of this student are and this is responnse  3", result2);
+												var data = {
+													response : result2,
+													status:"the marks and subject_name have been sent to you",
+													token : req.body.token,
+													id : req.body.id
+												}
+												//console.log(data);
+												res.send(data);
+											})
+
+										})
+									}
+								}else{
+										for( var i=0;i<result3.length;i++){
+											if(result3[i].subject_id==req.body.sub_id){
+												q2 = "select s.subject_name,m.marks from subjects s join marks m on s.id=m.subject_id where m.teacher_id=? and m.user_id=?"//select marks from marks where teacher_id=? and user_id=?
+												con.query(q2,[req.body.id, m], function(err, result2){
+													if (err) throw err;
+													console.log("the marks right now of this student are and this is responnse  4", result2);
+													var data = {
+														response : result2,
+														status:"the marks and subject_name have been sent to you",
+														token : req.body.token,
+														id : req.body.id
+													}
+													//console.log(data);
+													res.send(data);
+												})
+											}
+										}
+										var c=0;
+										for(var i=0;i<result3.length;i++){
+											if(result3[i].subject_id!=req.body.sub_id){
+												c++;
+											}
+										}
+										if(c==result3.length)
+											{
+										var q4 ="insert into marks(subject_id, user_id, teacher_id, modified_at) values(?,?,?,?)"
+										con.query(q4, [req.body.sub_id, m, req.body.id, date ], function(err, result4){
+											if (err) throw err;
+											q2 = "select s.subject_name,m.marks from subjects s join marks m on s.id=m.subject_id where m.teacher_id=? and m.user_id=?"//select marks from marks where teacher_id=? and user_id=?
+											con.query(q2,[req.body.id, m], function(err, result2){
+												if (err) throw err;
+												console.log("the marks right now of this student are and this is responnse  5", result2);
+												var data = {
+													response : result2,
+													status:"the marks and subject_name have been sent to you",
+													token : req.body.token,
+													id : req.body.id
+												}
+												//console.log(data);
+												res.send(data);
+											})
+
+										})}
+								}
+							})}//ending of the else with k!=0
+
+			})
+		})
+	}else {
+				var data = {status:"session expired"}
+				res.send(data);
+			}
+		})
+	})
+
+
+
+	app.post('/logout', function(req, res){
+		//condition to be tested everytime
+		var sql1= "select login_token from users where id=?";
+		con.query(sql, [req.body.id], function(err, res1){
+		if (err) throw err;
+		else{
+			if(req.body.token==res1[0].login_token)
+			{//api k under queries
+				var sql = "update  users set login_token = NULL where id =? "
+				con.query(sql , [req.body.id], function(err, result){
+					if(err) throw err;
+					console.log("the affected rows are has to be 1 ", result.affectedRows);
+				res.sendFile(path.resolve('../frontend/index.html'));
+				})
+			}else{
+				var data = {status:"session expired"}
+			 res.send(data);
+			}
+		}
+	})
+	})
+
 
 var server = app.listen(8081, function () {
 	var host = server.address().address
