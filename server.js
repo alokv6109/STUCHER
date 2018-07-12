@@ -9,14 +9,14 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(bodyParser.json());
-var storage = multer.diskStorage({
-	destination: function (req, file, callback) {
-		callback(null, 'F:/intern-project/backend/db_profile_image')
-	},
-	filename: function (req, file, callback) {
-		callback(null, '-' + Date.now() + path.extname(file.originalname))
-	}
-})
+// var storage = multer.diskStorage({
+// 	destination: function (req, file, callback) {
+// 		callback(null, 'F:/intern-project/backend/db_profile_image')
+// 	},
+// 	filename: function (req, file, callback) {
+// 		callback(null, '-' + Date.now() + path.extname(file.originalname))
+// 	}
+// })
 var mysql = require('mysql');
 var token1;
 var con = mysql.createConnection
@@ -33,22 +33,22 @@ con.connect(function (err) {
 
 // ******************      MULTER CONFIGURATION     *************
 const multerConfig = {
-    
+
 	storage: multer.diskStorage({
 	 //Setup where the user's file will go
 	 destination: function(req, file, next){
 	   next(null, './images');
-	   },   
-		
+	   },
+
 		//Then give the file a unique name
 		filename: function(req, file, next){
 			console.log(file);
 			const ext = file.mimetype.split('/')[1];
 			next(null, file.fieldname + '-' + Date.now() + '.'+ext);
 		  }
-		}),   
-		
-		//A means of ensuring only images are uploaded. 
+		}),
+
+		//A means of ensuring only images are uploaded.
 		fileFilter: function(req, file, next){
 			  if(!file){
 				next();
@@ -59,7 +59,7 @@ const multerConfig = {
 			  next(null, true);
 			}else{
 			  console.log("file not supported");
-			  
+
 			  //TODO:  A better message response to user on failure.
 			  return next();
 			}
@@ -135,9 +135,9 @@ app.post('/process_stud', function (req, res) {
 					});
 
 				} else {
-					res.end("WRONG CREDENTIALS");
+					res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 				}
-			} else { res.end("WRONG CREDENTIALS") }
+			} else { res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html')); }
 
 		}
 	})
@@ -206,9 +206,9 @@ app.post('/process_teach', function (req, res) {
 						})
 					});
 				} else {
-					res.end("WRONG CREDENTIALS");
+					res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 				}
-			} else { res.end("WRONG CREDENTIALS") }
+			} else { res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html')); }
 		}
 	})
 	console.log("your teacher login page is processing some request");
@@ -226,7 +226,7 @@ app.post('/register_stud',multer(multerConfig).single('pc'), function (req, res)
 			//console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
 
 			var sql = "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at, modified_at,image,role_id) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.roll_no, req.body.branch, req.body.email, req.body.mobile, md5(req.body.password), data, data, req.file.originalname, '1'], function (err, result) {
+			con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.roll_no, req.body.branch, req.body.email, req.body.mobile, md5(req.body.password), data, data, req.file.filename, '1'], function (err, result) {
 				if (err) throw err;
 				console.log("user added to db with id " + result.insertId);
 			})
@@ -247,7 +247,7 @@ app.post('/register_teach',multer(multerConfig).single('pc'), function (req, res
 			console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
 
 			var sql = "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at,modified_at,image,role_id) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.emp_id, req.body.department, req.body.email, req.body.mobile, md5(req.body.password), data, data, req.file.originalname, '2'], function (err, result) {
+			con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.emp_id, req.body.department, req.body.email, req.body.mobile, md5(req.body.password), data, data, req.file.filename, '2'], function (err, result) {
 				if (err) throw err;
 				console.log("user added to db with id " + result.insertId);
 			})
@@ -303,8 +303,9 @@ app.post('/marks', function (req, res) {
 				})
 				// the above query is for the students to get their marks
 			} else {
-				var data = { status: "your session has expired" };
-				res.send(data);
+				// var data = { status: "your session has expired" };
+				// res.send(data);
+				res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 			}
 		}
 	})
@@ -439,9 +440,11 @@ app.post('/teach_stud', function (req, res) {
 				})
 			})
 		} else {
-			var data = { status: "session expired" }
-			res.send(data);
+			// var data = { status: "session expired" }
+			// res.send(data);
+				res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 		}
+
 	})
 })
 
@@ -464,6 +467,7 @@ app.post('/logout', function (req, res) {
 			} else {
 				var data = { status: "session expired" }
 				res.send(data);
+				//res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 			}
 		}
 	})
@@ -486,8 +490,9 @@ app.post('/updateMarks', function (req, res) {
 
 
 			} else {
-				var data = { status: "session expired" }
-				res.send(data);
+				// var data = { status: "session expired" }
+				// res.send(data);
+				res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 			}
 		}
 	})
