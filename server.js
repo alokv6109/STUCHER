@@ -131,7 +131,7 @@ app.post('/process_stud', function (req, res) {
 				}
 			} else { res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html')); }
 
-		} else { res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html')); }
+		}
 	})
 
 	console.log("your student login page is processing some request");
