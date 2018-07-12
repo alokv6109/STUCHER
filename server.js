@@ -111,34 +111,32 @@ app.post('/process_stud', function (req, res) {
 })
 app.post('/student_details', function (req, res) {
 	console.log('the request in student_details page is ', req.body)
-	if(req.body.token==undefined)
-	{
+	if (req.body.token == undefined) {
 		res.send("401")
 	}
-	else{
-	var sq = "select *from users where login_token=?";
-	con.query(sq, [req.body.token], function (err, result) {
-		if (err) throw err;
-		console.log(result)
-		res.send(result[0])
-	})
-}
+	else {
+		var sq = "select *from users where login_token=?";
+		con.query(sq, [req.body.token], function (err, result) {
+			if (err) throw err;
+			console.log(result)
+			res.send(result[0])
+		})
+	}
 })
 
 app.post('/teacher_details', function (req, res) {
 	console.log('the request in teacher details is ', req.body)
-	if(req.body.token==undefined)
-	{
+	if (req.body.token == undefined) {
 		res.send("401")
 	}
-	else{
-	var sq = "select *from users where login_token=?";
-	con.query(sq, [req.body.token], function (err, result) {
-		if (err) throw err;
-		console.log(result)
-		res.send(result[0])
-	})
-}
+	else {
+		var sq = "select *from users where login_token=?";
+		con.query(sq, [req.body.token], function (err, result) {
+			if (err) throw err;
+			console.log(result)
+			res.send(result[0])
+		})
+	}
 })
 
 app.post('/process_teach', function (req, res) {
@@ -179,7 +177,7 @@ app.post('/process_teach', function (req, res) {
 	})
 	console.log("your teacher login page is processing some request");
 })
-app.post('/register_stud', function (req, res) {
+app.post('/register_stud',multer(multerConfig).single('pc'), function (req, res) {
 	var sql = "select * from users where roll_no = ? or mobile_number=? ";
 	con.query(sql, [req.body.roll_no, req.body.mobile], function (err, result) {
 		//console.log("the length is    ",result.length);
@@ -192,7 +190,7 @@ app.post('/register_stud', function (req, res) {
 			//console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
 
 			var sql = "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at, modified_at,image,role_id) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.roll_no, req.body.branch, req.body.email, req.body.mobile, md5(req.body.password), data, data, req.body.pc, '1'], function (err, result) {
+			con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.roll_no, req.body.branch, req.body.email, req.body.mobile, md5(req.body.password), data, data, req.file.originalname, '1'], function (err, result) {
 				if (err) throw err;
 				console.log("user added to db with id " + result.insertId);
 			})
@@ -200,7 +198,44 @@ app.post('/register_stud', function (req, res) {
 		}
 	})
 })
-app.post('/register_teach', function (req, res) {
+
+// ******************      MULTER CONFIGURATION     *************
+const multerConfig = {
+    
+	storage: multer.diskStorage({
+	 //Setup where the user's file will go
+	 destination: function(req, file, next){
+	   next(null, './images');
+	   },   
+		
+		//Then give the file a unique name
+		filename: function(req, file, next){
+			console.log(file);
+			const ext = file.mimetype.split('/')[1];
+			next(null, file.fieldname + '-' + Date.now() + '.'+ext);
+		  }
+		}),   
+		
+		//A means of ensuring only images are uploaded. 
+		fileFilter: function(req, file, next){
+			  if(!file){
+				next();
+			  }
+			const image = file.mimetype.startsWith('image/');
+			if(image){
+			  console.log('photo uploaded');
+			  next(null, true);
+			}else{
+			  console.log("file not supported");
+			  
+			  //TODO:  A better message response to user on failure.
+			  return next();
+			}
+		}
+	  };
+
+app.post('/register_teach',multer(multerConfig).single('pc'), function (req, res) {
+	// console.log("FILE NAME ",req.file.originalname)
 	var sql = "select * from users where roll_no = ? or mobile_number=? ";
 	con.query(sql, [req.body.emp_id, req.body.mobile], function (err, result) {
 		if (err) throw err;
@@ -211,7 +246,7 @@ app.post('/register_teach', function (req, res) {
 			console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
 
 			var sql = "insert into users(first_name, last_name, dob, roll_no, branch_id,email_id, mobile_number, password, created_at,modified_at,image,role_id) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.emp_id, req.body.department, req.body.email, req.body.mobile, md5(req.body.password), data, data, req.body.pc, '2'], function (err, result) {
+			con.query(sql, [req.body.first_name, req.body.last_name, req.body.dob, req.body.emp_id, req.body.department, req.body.email, req.body.mobile, md5(req.body.password), data, data, req.file.originalname, '2'], function (err, result) {
 				if (err) throw err;
 				console.log("user added to db with id " + result.insertId);
 			})
