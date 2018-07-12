@@ -110,23 +110,35 @@ app.post('/process_stud', function (req, res) {
 	// res.end("WRONG CREDENTIALS");
 })
 app.post('/student_details', function (req, res) {
-	console.log('the get request is ', req.body)
-	var sq = "select *from users where login_token=?";
-	con.query(sq, [req.body.token], function (err, result) {
-		if (err) throw err;
-		//console.log(result)
-		res.send(result[0])
-	})
-})
-
-app.post('/teacher_details', function (req, res) {
-	console.log('the get request is ', req.body)
+	console.log('the request in student_details page is ', req.body)
+	if(req.body.token==undefined)
+	{
+		res.send("401")
+	}
+	else{
 	var sq = "select *from users where login_token=?";
 	con.query(sq, [req.body.token], function (err, result) {
 		if (err) throw err;
 		console.log(result)
 		res.send(result[0])
 	})
+}
+})
+
+app.post('/teacher_details', function (req, res) {
+	console.log('the request is ', req.body)
+	if(req.body.token==undefined)
+	{
+		res.send("401")
+	}
+	else{
+	var sq = "select *from users where login_token=?";
+	con.query(sq, [req.body.token], function (err, result) {
+		if (err) throw err;
+		console.log(result)
+		res.send(result[0])
+	})
+}
 })
 
 app.post('/process_teach', function (req, res) {
@@ -401,7 +413,7 @@ app.post('/teach_stud', function (req, res) {
 
 app.post('/logout', function (req, res) {
 	//condition to be tested everytime
-	console.log("THe LOGOUT request is ",req.body)
+	console.log("THe LOGOUT request is ", req.body)
 	var sql1 = "select login_token from users where id=?";
 	con.query(sql1, [req.body.id], function (err, res1) {
 		if (err) throw err;
