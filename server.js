@@ -37,7 +37,7 @@ const multerConfig = {
 	storage: multer.diskStorage({
 	 //Setup where the user's file will go
 	 destination: function(req, file, next){
-	   next(null, 'F:/intern-project/frontend/assets/user_images');
+	   next(null, './images');
 	   },
 
 		//Then give the file a unique name
@@ -135,11 +135,11 @@ app.post('/process_stud', function (req, res) {
 					});
 
 				} else {
-					res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
+					res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 				}
-			} else { res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html')); }
+			} else { res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html')); }
 
-		}
+		} else { res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html')); }
 	})
 
 	console.log("your student login page is processing some request");
@@ -206,20 +206,20 @@ app.post('/process_teach', function (req, res) {
 						})
 					});
 				} else {
-					res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
+					res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 				}
-			} else { res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html')); }
+			} else { res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html')); }
 		}
 	})
 	console.log("your teacher login page is processing some request");
 })
 app.post('/register_stud',multer(multerConfig).single('pc'), function (req, res) {
-	var sql = "select * from users where roll_no = ? or mobile_number=? ";
-	con.query(sql, [req.body.roll_no, req.body.mobile], function (err, result) {
+	var sql = "select * from users where roll_no = ? or mobile_number=? or email_id=? ";
+	con.query(sql, [req.body.roll_no, req.body.mobile, req.body.email], function (err, result) {
 		//console.log("the length is    ",result.length);
 		if (err) throw err;
 		if (result.length > 0) {
-			res.end("roll_no or mobile_no already exists! please check them once");
+			res.end("roll_no or mobile_no or the email_id already exists! please check them once");
 		} else {
 			//var upload = multer({storage: storage,}).single('userFile');
 			var data = new Date(); // without jquery remove this $.now()
@@ -237,11 +237,11 @@ app.post('/register_stud',multer(multerConfig).single('pc'), function (req, res)
 
 app.post('/register_teach',multer(multerConfig).single('pc'), function (req, res) {
 	// console.log("FILE NAME ",req.file.originalname)
-	var sql = "select * from users where roll_no = ? or mobile_number=? ";
-	con.query(sql, [req.body.emp_id, req.body.mobile], function (err, result) {
+	var sql = "select * from users where roll_no = ? or mobile_number=? or email_id=? ";
+	con.query(sql, [req.body.emp_id, req.body.mobile, req.body.email], function (err, result) {
 		if (err) throw err;
 		if (result.length > 0) {
-			res.end("emp_id or mobile_no already exists! please check them once");
+			res.end("emp_id or mobile_no or the email_id already exists! please check them once");
 		} else {
 			var data = new Date();
 			console.log(data)// Thu Jun 23 2016 15:48:24 GMT+0530 (IST)
@@ -305,7 +305,7 @@ app.post('/marks', function (req, res) {
 			} else {
 				// var data = { status: "your session has expired" };
 				// res.send(data);
-				res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
+				res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 			}
 		}
 	})
@@ -378,7 +378,7 @@ app.post('/teach_stud', function (req, res) {
 											if (err) throw err;
 											console.log("the marks right now of this student are and this is responnse  3", result2);
 											var data = {
-												response: result2,
+												marks: result2,
 												status: "the marks and subject_name have been sent to you",
 												token: req.body.token,
 												id: req.body.id
@@ -397,7 +397,7 @@ app.post('/teach_stud', function (req, res) {
 											if (err) throw err;
 											console.log("the marks right now of this student are and this is responnse  4", result2);
 											var data = {
-												response: result2,
+												marks: result2,
 												status: "the marks and subject_name have been sent to you",
 												token: req.body.token,
 												id: req.body.id
@@ -422,7 +422,7 @@ app.post('/teach_stud', function (req, res) {
 											if (err) throw err;
 											console.log("the marks right now of this student are and this is responnse  5", result2);
 											var data = {
-												response: result2,
+												marks: result2,
 												status: "the marks and subject_name have been sent to you",
 												token: req.body.token,
 												id: req.body.id
@@ -442,7 +442,7 @@ app.post('/teach_stud', function (req, res) {
 		} else {
 			// var data = { status: "session expired" }
 			// res.send(data);
-				res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
+				res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 		}
 
 	})
@@ -467,7 +467,7 @@ app.post('/logout', function (req, res) {
 			} else {
 				var data = { status: "session expired" }
 				res.send(data);
-				//res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
+				//res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 			}
 		}
 	})
@@ -492,7 +492,7 @@ app.post('/updateMarks', function (req, res) {
 			} else {
 				// var data = { status: "session expired" }
 				// res.send(data);
-				res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
+				res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 			}
 		}
 	})
