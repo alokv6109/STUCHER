@@ -35,36 +35,36 @@ con.connect(function (err) {
 const multerConfig = {
 
 	storage: multer.diskStorage({
-	 //Setup where the user's file will go
-	 destination: function(req, file, next){
-	   next(null, './images');
-	   },
+		//Setup where the user's file will go
+		destination: function (req, file, next) {
+			next(null, 'F:/intern-project/frontend/assets/user_images');
+		},
 
 		//Then give the file a unique name
-		filename: function(req, file, next){
+		filename: function (req, file, next) {
 			console.log(file);
 			const ext = file.mimetype.split('/')[1];
-			next(null, file.fieldname + '-' + Date.now() + '.'+ext);
-		  }
-		}),
-
-		//A means of ensuring only images are uploaded.
-		fileFilter: function(req, file, next){
-			  if(!file){
-				next();
-			  }
-			const image = file.mimetype.startsWith('image/');
-			if(image){
-			  console.log('photo uploaded');
-			  next(null, true);
-			}else{
-			  console.log("file not supported");
-
-			  //TODO:  A better message response to user on failure.
-			  return next();
-			}
+			next(null, file.fieldname + '-' + Date.now() + '.' + ext);
 		}
-	  };
+	}),
+
+	//A means of ensuring only images are uploaded.
+	fileFilter: function (req, file, next) {
+		if (!file) {
+			next();
+		}
+		const image = file.mimetype.startsWith('image/');
+		if (image) {
+			console.log('photo uploaded');
+			next(null, true);
+		} else {
+			console.log("file not supported");
+
+			//TODO:  A better message response to user on failure.
+			return next();
+		}
+	}
+};
 
 
 app.use(express.static('../frontend/assets'));
@@ -213,7 +213,7 @@ app.post('/process_teach', function (req, res) {
 	})
 	console.log("your teacher login page is processing some request");
 })
-app.post('/register_stud',multer(multerConfig).single('pc'), function (req, res) {
+app.post('/register_stud', multer(multerConfig).single('pc'), function (req, res) {
 	var sql = "select * from users where roll_no = ? or mobile_number=? or email_id=? ";
 	con.query(sql, [req.body.roll_no, req.body.mobile, req.body.email], function (err, result) {
 		//console.log("the length is    ",result.length);
@@ -235,7 +235,7 @@ app.post('/register_stud',multer(multerConfig).single('pc'), function (req, res)
 	})
 })
 
-app.post('/register_teach',multer(multerConfig).single('pc'), function (req, res) {
+app.post('/register_teach', multer(multerConfig).single('pc'), function (req, res) {
 	// console.log("FILE NAME ",req.file.originalname)
 	var sql = "select * from users where roll_no = ? or mobile_number=? or email_id=? ";
 	con.query(sql, [req.body.emp_id, req.body.mobile, req.body.email], function (err, result) {
@@ -442,7 +442,7 @@ app.post('/teach_stud', function (req, res) {
 		} else {
 			// var data = { status: "session expired" }
 			// res.send(data);
-				res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
+			res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
 		}
 
 	})
