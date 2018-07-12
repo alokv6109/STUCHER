@@ -220,7 +220,7 @@ app.post('/forgot_password', function (req, res) {
 				if (err)
 					throw err;
 				else {
-					res.end("your password has been changed successfully");
+					res.sendFile(path.resolve('../frontend/index.html'));
 				}
 			})
 
@@ -401,6 +401,7 @@ app.post('/teach_stud', function (req, res) {
 
 app.post('/logout', function (req, res) {
 	//condition to be tested everytime
+	console.log("THe LOGOUT request is ",req.body)
 	var sql1 = "select login_token from users where id=?";
 	con.query(sql1, [req.body.id], function (err, res1) {
 		if (err) throw err;
@@ -410,7 +411,7 @@ app.post('/logout', function (req, res) {
 				con.query(sql, [req.body.id], function (err, result) {
 					if (err) throw err;
 					console.log("the affected rows are has to be 1 ", result.affectedRows);
-					res.sendFile(path.resolve('../frontend/index.html'));
+					res.end();
 				})
 			} else {
 				var data = { status: "session expired" }
