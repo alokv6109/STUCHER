@@ -126,7 +126,7 @@ app.post('/student_details', function (req, res) {
 })
 
 app.post('/teacher_details', function (req, res) {
-	console.log('the request is ', req.body)
+	console.log('the request in teacher details is ', req.body)
 	if(req.body.token==undefined)
 	{
 		res.send("401")
