@@ -9,14 +9,6 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(bodyParser.json());
-// var storage = multer.diskStorage({
-// 	destination: function (req, file, callback) {
-// 		callback(null, 'F:/intern-project/backend/db_profile_image')
-// 	},
-// 	filename: function (req, file, callback) {
-// 		callback(null, '-' + Date.now() + path.extname(file.originalname))
-// 	}
-// })
 var mysql = require('mysql');
 var token1;
 var con = mysql.createConnection
@@ -135,11 +127,11 @@ app.post('/process_stud', function (req, res) {
 					});
 
 				} else {
-					res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
+					res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
 				}
-			} else { res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html')); }
+			} else { res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html')); }
 
-		} else { res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html')); }
+		} else { res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html')); }
 	})
 
 	console.log("your student login page is processing some request");
@@ -206,9 +198,9 @@ app.post('/process_teach', function (req, res) {
 						})
 					});
 				} else {
-					res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
+					res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
 				}
-			} else { res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html')); }
+			} else { res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html')); }
 		}
 	})
 	console.log("your teacher login page is processing some request");
@@ -305,7 +297,7 @@ app.post('/marks', function (req, res) {
 			} else {
 				// var data = { status: "your session has expired" };
 				// res.send(data);
-				res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
+				res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
 			}
 		}
 	})
@@ -442,7 +434,7 @@ app.post('/teach_stud', function (req, res) {
 		} else {
 			// var data = { status: "session expired" }
 			// res.send(data);
-			res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
+			res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
 		}
 
 	})
@@ -467,7 +459,7 @@ app.post('/logout', function (req, res) {
 			} else {
 				var data = { status: "session expired" }
 				res.send(data);
-				//res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
+				//res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
 			}
 		}
 	})
@@ -492,7 +484,7 @@ app.post('/updateMarks', function (req, res) {
 			} else {
 				// var data = { status: "session expired" }
 				// res.send(data);
-				res.sendFile(path.resolve('../frontend/assets/html/404 FORBIDDEN.html'));
+				res.sendFile(path.resolve('../frontend/assets/html/404_FORBIDDEN.html'));
 			}
 		}
 	})
