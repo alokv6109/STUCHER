@@ -249,11 +249,12 @@ app.post('/register_teach', multer(multerConfig).single('pc'), function (req, re
 })
 app.post('/forgot_password', function (req, res) {
 	var sql = "select * from users where email_id=?"
+	console.log("######### req #########",req.body)
 	con.query(sql, [req.body.email], function (err, result) {
 		if (err) throw err;
 		if (result.length <= 0) {
 			console.log("email did not match");
-			res.end("oops!!your email id did not match")
+			res.send("401")
 		} else {
 			var sql1 = "update users set password=? where email_id=?";
 			con.query(sql1, [md5(req.body.password), req.body.email], function (err, result1) {
