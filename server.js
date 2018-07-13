@@ -315,10 +315,10 @@ app.post('/teach_stud', function (req, res) {
 				var m = result0[0].id
 				console.log("the id is ", m);
 				var date = new Date();
-				var q1 = "update marks m set m.user_id=?, m.teacher_id=?, m.modified_at=? where m.teacher_id=? and m.user_id=? ";//this query will
+				var q1 = "update marks m set m.user_id=?, m.teacher_id=? where m.teacher_id=? and m.user_id=? ";//this query will
 				// basically upddate everything if the teacher_id and the student_id/roll_no they match. but if we need the subject id ie  present there and also need to update marks that
 				// in some other subject id
-				con.query(q1, [m, req.body.id, date, req.body.id, m], function (err, result) {
+				con.query(q1, [m, req.body.id, req.body.id, m], function (err, result) {
 					if (err) throw err;
 					var k = result.affectedRows;
 					console.log("the result comes out to be  ", result.affectedRows);
@@ -412,9 +412,17 @@ app.post('/teach_stud', function (req, res) {
 										q2 = "select s.subject_name,m.marks, m.subject_id from subjects s join marks m on s.id=m.subject_id where m.teacher_id=? and m.user_id=? "//select marks from marks where teacher_id=? and user_id=?
 										con.query(q2, [req.body.id, m, req.body.sub_id], function (err, result2) {
 											if (err) throw err;
-											console.log("the marks right now of this student are and this is responnse  5", result2);
+											var marks=[];
+											marks.push(result2[c])
+
+											console.log("the marks right now of this student are and this is responnse  5", marks);
+											//console.log(result2[c]);
+											// var marks = new Object();
+											// marks.subject_name=  result2[c].subject_name
+											// marks.marks = result2[c].marks
+											// 	marks.subject_id =  result2[c].subject_id
 											var data = {
-												marks: result2,
+												marks: marks,
 												status: "the marks and subject_name have been sent to you",
 												token: req.body.token,
 												id: req.body.id
