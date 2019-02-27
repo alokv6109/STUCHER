@@ -5,18 +5,16 @@ var md5 = require('md5');
 var jwt = require('jsonwebtoken');
 var multer = require('multer')
 var bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({
-	extended: true
-}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 var mysql = require('mysql');
 var token1;
 var con = mysql.createConnection
 	({
-		host: "localhost",
-		user: "root",
-		password: "",
-		database: "project_database"
+		host: "sql12.freemysqlhosting.net",
+		user: "sql12281037",
+		password: "PyyPaMhijT",
+		database: "sql12281037"
 	})
 con.connect(function (err) {
 	if (err) throw err;
@@ -206,6 +204,7 @@ app.post('/process_teach', function (req, res) {
 	console.log("your teacher login page is processing some request");
 })
 app.post('/register_stud', multer(multerConfig).single('pc'), function (req, res) {
+	console.log(req.body);
 	var sql = "select * from users where roll_no = ? or mobile_number=? or email_id=? ";
 	con.query(sql, [req.body.roll_no, req.body.mobile, req.body.email], function (err, result) {
 		//console.log("the length is    ",result.length);
@@ -282,17 +281,12 @@ app.post('/marks', function (req, res) {
 				q2 = "select s.subject_name,m.marks from subjects s join marks m on s.id=m.subject_id where m.user_id=?"
 				con.query(q2, [req.body.id], function (err, result3) {
 					if (err) throw err;
-
-					//console.log('the value of result3[0] is      ',result3[0]);
-					//console.log("th e result 3 are ", result3[0].subject_name)
-					// name[i]= result3[0].subject_name;
 					console.log("the result of the query ie fired is", result3);
 					var data = {
 						result: result3,
 						status: "success"
 					};
 					res.send(data);
-
 				})
 				// the above query is for the students to get their marks
 			} else {
