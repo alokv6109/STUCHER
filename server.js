@@ -11,10 +11,10 @@ var mysql = require('mysql');
 var token1;
 var con = mysql.createConnection
 	({
-		host: "sql12.freemysqlhosting.net",
-		user: "sql12281037",
-		password: "PyyPaMhijT",
-		database: "sql12281037"
+		host: "remotemysql.com",
+		user: "iTR26SxUTP",
+		password: "yYBdiwoxni",
+		database: "iTR26SxUTP"
 	})
 con.connect(function (err) {
 	if (err) throw err;
