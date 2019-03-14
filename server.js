@@ -27,7 +27,7 @@ const multerConfig = {
 	storage: multer.diskStorage({
 		//Setup where the user's file will go
 		destination: function (req, file, next) {
-			next(null, '/frontend/assets/user_images');
+			next(null, './frontend/assets/user_images');
 		},
 
 		//Then give the file a unique name
@@ -57,39 +57,39 @@ const multerConfig = {
 };
 
 
-app.use(express.static('/frontend/assets'));
+app.use(express.static('./frontend/assets'));
 
 app.get('/', function (req, res) {
 	console.log("your index page has loaded successfully");
-	res.sendFile(path.resolve('/frontend/index.html'));
+	res.sendFile(path.resolve('./frontend/index.html'));
 })
 app.get('/teacherlogin', function (req, res) {
 	console.log("your teacher page has loaded successfully");
-	res.sendFile(path.resolve('/frontend/assets/html/teacher_login.html'));
+	res.sendFile(path.resolve('./frontend/assets/html/teacher_login.html'));
 })
 app.get('/studentlogin', function (req, res) {
 	console.log("your student page has loaded successfully");
-	res.sendFile(path.resolve('/frontend/assets/html/student_login.html'));
+	res.sendFile(path.resolve('./frontend/assets/html/student_login.html'));
 })
 app.get('/newstudent', function (req, res) {
 	console.log("your signup page for student has loaded successfully");
-	res.sendFile(path.resolve('/frontend/assets/html/student_signup.html'));
+	res.sendFile(path.resolve('./frontend/assets/html/student_signup.html'));
 })
 app.get('/newteacher', function (req, res) {
 	console.log("your signup page for teacher has loaded successfully");
-	res.sendFile(path.resolve('/frontend/assets/html/teacher_signup.html'));
+	res.sendFile(path.resolve('./frontend/assets/html/teacher_signup.html'));
 })
 app.get('/student_details', function (req, res) {
 	console.log("your student details page has loaded successfully");
-	res.sendFile(path.resolve('/frontend/assets/html/student_details.html'));
+	res.sendFile(path.resolve('./frontend/assets/html/student_details.html'));
 })
 app.get('/teacher_details', function (req, res) {
 	console.log("your teacher details page has loaded successfully");
-	res.sendFile(path.resolve('/frontend/assets/html/teacher_details.html'));
+	res.sendFile(path.resolve('./frontend/assets/html/teacher_details.html'));
 })
 app.get("/forgot_password", function (req, res) {
 	console.log("your forgotpassword page has loaded successfully");
-	res.sendFile(path.resolve('/frontend/assets/html/forgot_password.html'));
+	res.sendFile(path.resolve('./frontend/assets/html/forgot_password.html'));
 })
 app.post('/process_stud', function (req, res) {
 	console.log("the request is ", req.body.login_id);
@@ -125,9 +125,9 @@ app.post('/process_stud', function (req, res) {
 					});
 
 				} else {
-					res.sendFile(path.resolve('/frontend/assets/html/404_FORBIDDEN.html'));
+					res.sendFile(path.resolve('./frontend/assets/html/404_FORBIDDEN.html'));
 				}
-			} else { res.sendFile(path.resolve('/frontend/assets/html/404_FORBIDDEN.html')); }
+			} else { res.sendFile(path.resolve('./frontend/assets/html/404_FORBIDDEN.html')); }
 
 		}
 	})
@@ -196,9 +196,9 @@ app.post('/process_teach', function (req, res) {
 						})
 					});
 				} else {
-					res.sendFile(path.resolve('/frontend/assets/html/404_FORBIDDEN.html'));
+					res.sendFile(path.resolve('./frontend/assets/html/404_FORBIDDEN.html'));
 				}
-			} else { res.sendFile(path.resolve('/frontend/assets/html/404_FORBIDDEN.html')); }
+			} else { res.sendFile(path.resolve('./frontend/assets/html/404_FORBIDDEN.html')); }
 		}
 	})
 	console.log("your teacher login page is processing some request");
@@ -221,7 +221,7 @@ app.post('/register_stud', multer(multerConfig).single('pc'), function (req, res
 				if (err) throw err;
 				console.log("user added to db with id " + result.insertId);
 			})
-			res.sendFile(path.resolve('/frontend/assets/html/student_login.html'));
+			res.sendFile(path.resolve('./frontend/assets/html/student_login.html'));
 		}
 	})
 })
@@ -242,7 +242,7 @@ app.post('/register_teach', multer(multerConfig).single('pc'), function (req, re
 				if (err) throw err;
 				console.log("user added to db with id " + result.insertId);
 			})
-			res.sendFile(path.resolve('/frontend/assets/html/teacher_login.html'));
+			res.sendFile(path.resolve('./frontend/assets/html/teacher_login.html'));
 		}
 	})
 })
@@ -260,7 +260,7 @@ app.post('/forgot_password', function (req, res) {
 				if (err)
 					throw err;
 				else {
-					res.sendFile(path.resolve('/frontend/index.html'));
+					res.sendFile(path.resolve('./frontend/index.html'));
 				}
 			})
 
@@ -292,7 +292,7 @@ app.post('/marks', function (req, res) {
 			} else {
 				// var data = { status: "your session has expired" };
 				// res.send(data);
-				res.sendFile(path.resolve('/frontend/assets/html/404_FORBIDDEN.html'));
+				res.sendFile(path.resolve('./frontend/assets/html/404_FORBIDDEN.html'));
 			}
 		}
 	})
@@ -437,7 +437,7 @@ app.post('/teach_stud', function (req, res) {
 		} else {
 			// var data = { status: "session expired" }
 			// res.send(data);
-			res.sendFile(path.resolve('/frontend/assets/html/404_FORBIDDEN.html'));
+			res.sendFile(path.resolve('./frontend/assets/html/404_FORBIDDEN.html'));
 		}
 
 	})
@@ -462,7 +462,7 @@ app.post('/logout', function (req, res) {
 			} else {
 				var data = { status: "session expired" }
 				res.send(data);
-				//res.sendFile(path.resolve('/frontend/assets/html/404_FORBIDDEN.html'));
+				//res.sendFile(path.resolve('./frontend/assets/html/404_FORBIDDEN.html'));
 			}
 		}
 	})
@@ -487,7 +487,7 @@ app.post('/updateMarks', function (req, res) {
 			} else {
 				// var data = { status: "session expired" }
 				// res.send(data);
-				res.sendFile(path.resolve('/frontend/assets/html/404_FORBIDDEN.html'));
+				res.sendFile(path.resolve('./frontend/assets/html/404_FORBIDDEN.html'));
 			}
 		}
 	})
