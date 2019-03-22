@@ -31,6 +31,10 @@
     "json",
     "package"
   ],
+	"engines": {
+  "node": "4.2.6",
+  "npm": "3.5.2"
+},
   "author": "sanjay",
   "license": "ISC"
 }
