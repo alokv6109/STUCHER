@@ -2,7 +2,7 @@
   "name": "login",
   "version": "1.0.0",
   "description": "it contains all dependences",
-  "main": "login.js",
+  "main": "server.js",
   "dependencies": {
     "angular-jwt": "^0.1.10",
     "bcryptjs": "^2.4.3",
